@@ -1,0 +1,22 @@
+{
+  "name": "@ravdocs/console",
+  "version": "1.0.0",
+  "publishConfig": {
+    "scope": "ravdocs"
+  },
+  "description": "Console log hook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ravdocs/console.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ravdocs/console/issues"
+  },
+  "homepage": "https://github.com/ravdocs/console#readme"
+}
