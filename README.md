@@ -32,6 +32,3 @@ stdout.restore();
 // inspect outputs
 out = stdout.str(); // <--- console.log('My pants are on fire!');\n [timestamp] I am a little teapot!
 ```
-
-# todo
-- unit tests

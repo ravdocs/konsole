@@ -7,7 +7,7 @@
   "description": "Console log hook",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/ravdocs/console/issues"
   },
-  "homepage": "https://github.com/ravdocs/console#readme"
+  "homepage": "https://github.com/ravdocs/console#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
 }
