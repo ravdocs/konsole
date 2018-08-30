@@ -1,0 +1,2 @@
+# console
+Console log hook
