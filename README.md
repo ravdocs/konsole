@@ -18,16 +18,14 @@ var stdout = Konsole.hook(function (output, obj) {
 
 
 // setup process hook
-stdout.clean();
-stdout.disable();
+stdout.capture();
 
 // execute your code here
 console.log('My pants are on fire!');
 console.log('I am a little teapot!');
 
-// shutdown & cleanup process hook
-stdout.enable();
-stdout.restore();
+// release process hook
+stdout.release();
 
 // inspect outputs
 out = stdout.str(); // <--- console.log('My pants are on fire!');\n [timestamp] I am a little teapot!

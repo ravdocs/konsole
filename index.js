@@ -60,6 +60,16 @@ function hook(callback, stream) {
 		},
 		reset: function () {
 			return this.disable().clean().enable();
+		},
+		capture: function () {
+			this.clean();
+			this.disable();
+			return this;
+		},
+		release: function () {
+			this.enable();
+			this.restore();
+			return this;
 		}
 	};
 }
