@@ -28,5 +28,5 @@ console.log('I am a little teapot!');
 stdout.release();
 
 // inspect outputs
-out = stdout.str(); // <--- console.log('My pants are on fire!');\n [timestamp] I am a little teapot!
+out = stdout.toString(); // ---> [timestamp] My pants are on fire!'\n [timestamp] I am a little teapot!
 ```
