@@ -41,6 +41,14 @@ function hook(callback, stream) {
 		return this.output().str;
 	}
 
+	function toStringJson () {
+
+		// todo: how will we handle the {{log}} helper or private helpers logging info?
+		// todo: loop each line looking for none json content and convert it to a json element.
+		var lines = this.output().str.trim().split('}\n{');
+		return  '[' + lines.join(',') + ']';
+	}
+
 	function output () {
 		return out;
 	}
@@ -83,12 +91,13 @@ function hook(callback, stream) {
 		restore: restore,
 		disable: disable,
 		enable: enable,
-		output: output,
-		toString: toString,
 		clean: clean,
 		reset :reset,
 		capture:capture,
-		release: release
+		release: release,
+		output: output,
+		toString: toString,
+		toStringJson: toStringJson
 	};
 }
 

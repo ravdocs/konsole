@@ -1,12 +1,19 @@
-# console
-Hook into the console log to capture console.log(). Use for unit testing and code logging.
+# @RAVDOCS/CONSOLE
+Console utilities which allows us to create a communication side-channel with the renderer. We can:
+
+- Hook into the console log process to capture process.stdout (e.g. console.log()) .
+- Format console.log() to pass JSON data in the side-channel.
+
+# Formatting Console.log
+
+The formatting of console.log() to pass JSON data is an experimental feature. We need to determine how we will handle the {{log}} helper and errors.
 
 # Install
 ```bash
 npm install @ravdocs/console --save
 ```
 
-# Usage
+# Basic Usage
 
 ```js
 var Konsole = require('@ravdocs/console');
