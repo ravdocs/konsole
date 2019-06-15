@@ -1,0 +1,95 @@
+'use strict';
+
+// console.log ===> stdout
+// console.warn ===> console.error ===> stderr
+
+// todo: test console.log('%s %s', str1, str2);
+
+// https://gist.github.com/pguillory/729616/32aa9dd5b5881f6f2719db835424a7cb96dfdfd6
+
+function hook(callback, stream) {
+
+	var oldWrite = stream.write;
+	var out = {
+		str: ''
+	};
+
+	function capture () {
+		this.clean();
+		this.disable();
+		return this;
+	}
+
+	function release () {
+		this.enable();
+		this.restore();
+		return this;
+	}
+
+	function reset () {
+		return this.disable().clean().enable();
+	}
+
+	function clean () {
+		out = {
+			str: ''
+		};
+		return this;
+	}
+
+	function toString () {
+		return this.output().str;
+	}
+
+	function output () {
+		return out;
+	}
+
+	function enable() {
+		var self = this;
+		stream.write = (function (write) {
+			return function (str, enc, fd) {
+				write.apply(stream, arguments);
+				callback.call(self, out, {
+					str: str,
+					enc: enc,
+					fd: fd
+				});
+			};
+		})(oldWrite);
+		return this;
+	}
+
+	function disable () {
+		var self = this;
+		stream.write = (function () {
+			return function (str, enc, fd) {
+				callback.call(self, out, {
+					str: str,
+					enc: enc,
+					fd: fd
+				});
+			};
+		})();
+		return this;
+	}
+
+	function restore () {
+		stream.write = oldWrite;
+		return this;
+	}
+
+	return {
+		restore: restore,
+		disable: disable,
+		enable: enable,
+		output: output,
+		toString: toString,
+		clean: clean,
+		reset :reset,
+		capture:capture,
+		release: release
+	};
+}
+
+module.exports = hook;

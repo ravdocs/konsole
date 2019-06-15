@@ -1,11 +1,11 @@
 {
   "name": "@ravdocs/console",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publishConfig": {
     "scope": "ravdocs"
   },
   "description": "Console log hook",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha --recursive"
   },
