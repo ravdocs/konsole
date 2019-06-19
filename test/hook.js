@@ -3,7 +3,7 @@
 var Assert = require('assert');
 var Konsole = require('..');
 
-describe.only('Hook: capture and release stdout', function () {
+describe('Hook: capture and release stdout', function () {
 	it('should be able to capture stdout and release it', function(done) {
 
 		var stdout = Konsole.hook(function decorator (output, obj) {

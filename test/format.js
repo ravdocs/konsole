@@ -14,18 +14,18 @@ describe('Format: capture, format, release stdout', function () {
 		stdout.capture();
 
 		// render helpers 1
-		var konsole2 = new Konsole.format({genus: 'helper-one'});
+		var konsole = new Konsole.format({genus: 'helper-one'});
 		var param1 = 1, param2 = 2, hash3 = 3;
-		konsole2.info('param', 'name1', param1);
-		konsole2.warn('param', 'name2', param2);
-		konsole2.error('param', 'name3', hash3);
+		konsole.info('param', 'name1', param1);
+		konsole.warn('param', 'name2', param2);
+		konsole.error('param', 'name3', hash3);
 
 		// render helpers 2
-		var konsole2 = new Konsole.format({genus: 'helper-two'});
+		var konsole = new Konsole.format({genus: 'helper-two'});
 		param1 = 1, param2 = 2, hash3 = 3;
-		konsole2.info('param', 'name1', param1);
-		konsole2.warn('param', 'name2', param2);
-		konsole2.error('param', 'name3', hash3);
+		konsole.info('param', 'name1', param1);
+		konsole.warn('param', 'name2', param2);
+		konsole.error('param', 'name3', hash3);
 
 		// release stdout
 		stdout.release();
