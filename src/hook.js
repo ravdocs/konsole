@@ -87,7 +87,12 @@ function hook(callback, stream) {
 		return this;
 	}
 
+	function addError(e) {
+
+	}
+
 	return {
+		// todo: why do we need so many public methods?
 		restore: restore,
 		disable: disable,
 		enable: enable,

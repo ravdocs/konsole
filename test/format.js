@@ -13,19 +13,31 @@ describe('Format: capture, format, release stdout', function () {
 		// capture stdout
 		stdout.capture();
 
-		// render helpers 1
-		var konsole = new Konsole.format({genus: 'helper-one'});
-		var param1 = 1, param2 = 2, hash3 = 3;
-		konsole.info('param', 'name1', param1);
-		konsole.warn('param', 'name2', param2);
-		konsole.error('param', 'name3', hash3);
+		try {
 
-		// render helpers 2
-		var konsole = new Konsole.format({genus: 'helper-two'});
-		param1 = 1, param2 = 2, hash3 = 3;
-		konsole.info('param', 'name1', param1);
-		konsole.warn('param', 'name2', param2);
-		konsole.error('param', 'name3', hash3);
+			// render helpers 1
+			var konsole = new Konsole.format({genus: 'helper-one'});
+			var param1 = 1, param2 = 2, hash3 = 3;
+			konsole.info('param', 'name1', param1);
+			konsole.warn('param', 'name2', param2);
+			konsole.error('param', 'name3', hash3);
+
+			// render helpers 2
+			var konsole = new Konsole.format({genus: 'helper-two'});
+			param1 = 1, param2 = 2, hash3 = 3;
+			konsole.info('param', 'name1', param1);
+			konsole.warn('param', 'name2', param2);
+			konsole.error('param', 'name3', hash3);
+
+			// render helper 3
+			throw new Error('A fake helper error.');
+
+		} catch (e) {
+			// step 1: log error to centeralized logging platform (loggly) here.
+			// step 2: add caught error to the stdout via `stdout.addError().
+
+			// todo: stdout.addError(e);
+		}
 
 		// release stdout
 		stdout.release();
