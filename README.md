@@ -6,7 +6,10 @@ Console utilities which allows us to create a communication side-channel with th
 
 # Formatting Console.log
 
-The formatting of console.log() to pass JSON data is an experimental feature. We need to determine how we will handle the {{log}} helper and errors.
+The formatting of console.log() to pass JSON data is an **experimental** feature. We are yet to determine how we will handle the following:
+
+- {{log}} helper - we would need a custom global helper which would not call console.log() but instead call konsole.info(...). When {{log}} helper is asked to log objects the custom helper would konsole.info() the object as serialized JSON. Therefore, we would have a system which would output serialized JSON inside of serialized JSON.
+- errors - helpers can throw errors. I am pretty sure we will not need to do anything here as javascript errors do not use process.stdout.
 
 # Install
 ```bash
