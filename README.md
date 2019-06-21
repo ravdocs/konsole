@@ -50,3 +50,104 @@ stdout.release();
 // inspect outputs
 out = stdout.toString(); // ---> [timestamp] My pants are on fire!'\n [timestamp] I am a little teapot!
 ```
+
+# Console Formatting
+
+During the HTML rendering process the helpers can console.log() information. The @ravdocs/express-renderer hooks the console.log process to capture this TEXT information and return this information to the admin tools in the Console Web feature.
+
+Helpers can report problems in the following ways:
+- Throwing errors which terminate the rendering and return an error message.
+- Calling console.log() with TEXT information messages.
+
+**The problem here is the value of the Console Web TEXT information is limited because it is NOT in a machine readable format.**
+
+Consider a solution where we wrap console in the renderer to format the TEXT information sent to console.log to be JSON data instead of TEXT:
+
+```js
+exports.formatter = function (options) {
+  
+  function toJson(severity, type, name, value) {
+    var data = {
+      genus: options.genus,
+      severity: severity,
+      type: type,
+      name: name || '',
+      value: value || '',
+      timestamp: new Date()
+    };
+    return JSON.stringify(data) + ',';
+  }
+    
+  function info(type, name, value) {
+    var str = toJson('info', type, name, value);
+    console.log(str);
+  }
+  
+  function warn(type, name, value) {
+    var str = toJson('warn', type, name, value);
+    console.log(str);
+  }
+  
+  function error(type, name, value) {
+      var str = toJson('error', type, name,value);
+      console.log(str);
+  }
+  
+  return {
+    info: info,
+    warn: warn,
+    error: error
+  };
+};
+```
+
+Inside helpers we communicate to the Console Web like the following:
+```js
+if (okLog) console.log('NEST HELPER');
+if (okLog) console.log('* param1: ', param1);
+if (okLog) console.log('* param2: ', param2);
+if (okLog) console.log('* hash3: ', hash3);
+```
+
+This would be replaced with
+```js
+var Konsole = require('@ravdocs/console');
+var konsole = new Konsole.formatter({genus: 'helper-nest'});
+if (okLog) konsole.info('param', 'name1', param1);
+if (okLog) konsole.info('param', 'name2', param2);
+if (okLog) konsole.info('param', 'name3', hash3);
+```
+
+The renderer which is hooking the `console` process to capture the console.log() output would capture JSON-ish data:
+```text
+{"genus": "helper-nest", "severity":"info", "type": "greeting", "name": "", "value": "", timestamp: "..." },
+{"genus": "helper-nest", "severity":"info", "type": "param", "name": "name1", "value": param1, timestamp: "..." },
+{"genus": "helper-nest", "severity":"info", "type": "param", "name": "name2", "value": param2, timestamp: "..." },
+{"genus": "helper-nest", "severity":"info", "type": "hash", "name": "name3", "value": hash3, timestamp: "..." },
+```
+
+We just need to add array prefix and suffix to make this valid json. Now instead of sending TEXT to the admin tools we can send JSON data. The admin tools can convert this data into a TEXT display for viewing in the Console Web. However, we now have a JSON data file from the HTML rendering engine which can be machine readable looking for issues just like the PDF engine returns a data file.
+
+```text
+[2019-06-11T12:52:36.860Z] HTML ENGINE: started.
+[2019-06-11T12:52:36.860Z] * Render: @ravdocs/template-renderer@1.0.270
+[2019-06-11T12:52:36.860Z] * Template: welcomeletter-3.1xc@2019-05-14 DRAFT
+[2019-06-11T12:52:36.860Z] * Timezone: US/Central
+[2019-06-11T12:52:36.860Z] * Memory before: 232.81 MB
+[2019-06-11T12:52:36.861Z] * Webpage.stylesheet: https://use.fontawesome.com/releases/v5.0.1/css/all.css
+[2019-06-11T12:52:36.861Z] * Webpage.stylesheet: https://renderer.docsondemand.com/assets/static/css/render/normalize.css
+[2019-06-11T12:52:36.861Z] * Webpage.stylesheet: https://renderer.docsondemand.com/assets/dynamic/css/render/common.css?origin=tools&guidelines=body&grids=none
+[2019-06-11T12:52:36.861Z] * webpage.script: https://renderer.docsondemand.com/assets/dynamic/js/prince.js
+[2019-06-11T12:52:36.862Z] UNDERLINE HELPER:
+[2019-06-11T12:52:36.862Z] * Width: 'undefined'
+[2019-06-11T12:52:36.862Z] * Font-family: 'Times New Roman'
+[2019-06-11T12:52:36.862Z] * Font-size: '16px'
+[2019-06-11T12:52:36.862Z] * Prefix: 'Name: '
+[2019-06-11T12:52:36.862Z] 
+[2019-06-11T12:52:36.862Z] TypeError: Cannot read property 'toFixed' of undefined
+[2019-06-11T12:52:36.862Z] HTML ENGINE:
+[2019-06-11T12:52:36.862Z] * Memory after: 232.94 MB
+[2019-06-11T12:52:36.862Z] * Time duration: 0.005 secs
+[2019-06-11T12:52:36.862Z] * Completed.
+```
+
