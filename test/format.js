@@ -7,6 +7,7 @@ describe('Format: capture, format, release stdout', function () {
 	it('should be able to format stdout', function(done) {
 
 		var stdout = Konsole.hook(function decorator (output, obj) {
+			// if (obj.str === 'got here') obj.str = 'twice';
 			output.str += obj.str;
 		}, process.stdout);
 
@@ -15,28 +16,41 @@ describe('Format: capture, format, release stdout', function () {
 
 		try {
 
-			// render helpers 1
-			var konsole = new Konsole.format({genus: 'helper-one'});
-			var param1 = 1, param2 = 2, hash3 = 3;
-			konsole.info('param', 'name1', param1);
-			konsole.warn('param', 'name2', param2);
-			konsole.error('param', 'name3', hash3);
+			// {{helpers1}} helper
+			(function (){
+				var konsole = new Konsole.format({genus: 'helper-one'});
+				var param1 = 1, param2 = 2, hash3 = 3;
+				konsole.info('param', 'name1', param1);
+				konsole.warn('param', 'name2', param2);
+				konsole.error('param', 'name3', hash3);
+			})()
 
-			// render helpers 2
-			var konsole = new Konsole.format({genus: 'helper-two'});
-			param1 = 1, param2 = 2, hash3 = 3;
-			konsole.info('param', 'name1', param1);
-			konsole.warn('param', 'name2', param2);
-			konsole.error('param', 'name3', hash3);
 
-			// render helper 3
-			throw new Error('A fake helper error.');
+			// {{helpers2}} helper
+			(function (){
+				var konsole = new Konsole.format({genus: 'helper-two'});
+				param1 = 1, param2 = 2, hash3 = 3;
+				konsole.info('param', 'name1', param1);
+				konsole.warn('param', 'name2', param2);
+				konsole.error('param', 'name3', hash3);
+			})()
+
+			// {{log}}
+			(function (){
+				// console.log('somevalue');
+			})()
+
+			// {{error}} helper
+			(function (){
+				throw new Error('A fake helper error.');
+			})()
 
 		} catch (e) {
 			// step 1: log error to centeralized logging platform (loggly) here.
 			// step 2: add caught error to the stdout via `stdout.addError().
+			// console.log('got here');
 
-			// todo: stdout.addError(e);
+			stdout.appendError(e);
 		}
 
 		// release stdout
@@ -44,8 +58,9 @@ describe('Format: capture, format, release stdout', function () {
 
 		// inspect outputs
 		var actual = stdout.toStringJson();
+		console.log('actual', actual);
 		var arr = JSON.parse(actual);
-		// console.log('actual', actual);
+
 		arr.forEach(function(el) {
 			Assert.equal(!!el.genus, true);
 			Assert.equal(!!el.severity, true);

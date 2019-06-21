@@ -19,8 +19,11 @@
     "url": "https://github.com/ravdocs/console/issues"
   },
   "homepage": "https://github.com/ravdocs/console#readme",
-  "dependencies": {},
+  "dependencies": {
+    "console-hook": "0.0.2"
+  },
   "devDependencies": {
+    "capture-console": "^1.0.1",
     "mocha": "^5.2.0"
   }
 }

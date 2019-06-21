@@ -87,8 +87,8 @@ function hook(callback, stream) {
 		return this;
 	}
 
-	function addError(e) {
-
+	function appendError(e) {
+		// out.str += e.toMessage();
 	}
 
 	return {
@@ -102,7 +102,8 @@ function hook(callback, stream) {
 		release: release,
 		output: output,
 		toString: toString,
-		toStringJson: toStringJson
+		toStringJson: toStringJson,
+		appendError: appendError
 	};
 }
 
