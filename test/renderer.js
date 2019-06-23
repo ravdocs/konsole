@@ -11,7 +11,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 
 		var captures = [];
 		var silence = true;
-		var myHook = Hook(console, silence).attach((method, args) => {
+		var stdout = Hook(console, silence).attach((method, args) => {
 
 			// handle framed and unframed console statements
 			var frame = (args[0] instanceof Frame)
@@ -39,15 +39,11 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 					templateVersion: 'myVersion',
 					templateLine: 123
 				});
-				konsole.info('Header');
+				konsole.info('HELPER HELPER1');
+				konsole.info('hash1', 'value1', 2);
+
+				// log data like what template was nested or coordinates
 				konsole.data('name', 'value');
-				// konsole.info('Header', null, 2);
-				// konsole.warn('this might be a problem');
-				// konsole.error('small problem, but keep on executing');
-				// // konsole.errorHalt('big problem, but stop');
-				// throw new Error('I am confused.');
-				var hashval = 'hashvalue';
-				konsole.info('hashname', hashval, 2);
 			}());
 
 			(function () {
@@ -59,47 +55,55 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 					templateVersion: 'myVersion2',
 					templateLine: 444
 				});
-				konsole.info('message2');
+				konsole.info('HELPER HELPER2');
+				konsole.info('hash1', 'vaule1', 2);
+				konsole.info('hash2', 'vaule2', 2);
 			}());
 
-			// {{somehelper}} random console statements
-			console.log('oops');
-			console.info('hellow-info-oops');
-			console.warn('hello-warn-oops');
-			console.error('hello-error-oops');
+			(function () {
+				// some unframed console statements from someone elses code
+				console.log('oops');
+				console.info('hellow-info-oops');
+				console.warn('hello-warn-oops');
+				console.error('hello-error-oops');
+			}());
 
-			// {{error}} helper
-			var message = 'An intentional error message from helper helper.';
-			var error = new Error(message);
-			error.intentional = true;
-			error.frame = new Frame({
-				method: 'error',
-				sourceType: 'helper',
-				sourceName: 'error',
-				messageLevel: 1,
-				messageValue0: message,
-				messageValue1: error.stack,
-				templateName: 'myTemplate2',
-				templateVersion: 'myVersion2',
-				templateLine: 444
-			});
-			throw error;
+
+			(function () {
+				// {{error}} helper
+				var message = 'An intentional error message from helper helper.';
+				var error = new Error(message);
+				error.intentional = true;
+				error.frame = new Frame({
+					method: 'error',
+					sourceType: 'helper',
+					sourceName: 'error',
+					messageLevel: 1,
+					messageValue0: message,
+					messageValue1: error.stack,
+					templateName: 'myTemplate2',
+					templateVersion: 'myVersion2',
+					templateLine: 444
+				});
+				throw error;
+			}());
 
 		} catch (e) {
-			var frame = e.frame || new Frame({
-				method: 'error',
-				sourceType: 'renderer',
-				sourceName: 'trycatch',
-				messageLevel: 1,
-				messageValue0: e.toString(),
-				messageValue1: e.stack
-			});
+			var frame = (e.frame instanceof Frame)
+				? e.frame
+				: new Frame({
+					method: 'error',
+					sourceType: 'renderer',
+					sourceName: 'trycatch',
+					messageLevel: 1,
+					messageValue0: e.toString(),
+					messageValue1: e.stack
+				});
 			captures.push(frame);
-			// console.log(e);
 		}
 
-		// okay, we're done playing with the console stuffs
-		myHook.detach();
+		// release console
+		stdout.detach();
 
 		// inspect captures
 		// captures.forEach(function(frame, i) {
@@ -108,7 +112,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 
 		// test captures
 		Assert.equal(Array.isArray(captures), true);
-		Assert.equal(captures.length, 9);
+		Assert.equal(captures.length, 11);
 
 		done();
 	});
