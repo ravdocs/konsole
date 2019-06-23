@@ -10,54 +10,57 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 	it('should be able to capture stdout and release it', function (done) {
 
 		var captures = [];
-		var silence = false;
+		var silence = true;
 		var myHook = Hook(console, silence).attach((method, args) => {
-			var frame, frame2;
-			frame = args[0];
 
-			// handle framed console statements
-			if (frame instanceof Frame) return captures.push(frame);
+			// handle framed and unframed console statements
+			var frame = (args[0] instanceof Frame)
+				? args[0]
+				: new Frame({
+					method: method,
+					sourceType: 'renderer',
+					sourceName: 'hook',
+					messageLevel: 1,
+					messageValue0: args[0],
+					messageValue1: args[1]
+				});
 
-			// handle random console statements
-			var frame2 = new Frame({
-				method: method,
-				sourceType: 'renderer',
-				sourceName: 'hook',
-				messageLevel: 1,
-				messageValue0: args[0],
-				messageValue1: args[1]
-			});
-			captures.push(frame2);
+			captures.push(frame);
 		});
 
 		try {
 
-			// {{helper1}}
-			var konsole = new Konsole.stdout({
-				sourceType: 'helper',
-				sourceName: 'helper1',
-				templateName: 'myTemplate',
-				templateVersion: 'myVersion',
-				templateLine: 123
-			});
-			konsole.info('Header');
-			// konsole.info('Header', null, 2);
-			// konsole.warn('this might be a problem');
-			// konsole.error('small problem, but keep on executing');
-			// // konsole.errorHalt('big problem, but stop');
-			// throw new Error('I am confused.');
-			var hashval = 'hashvalue'
-			konsole.info('hashname', hashval, 2);
+			(function () {
+				// {{helper1}}
+				var konsole = new Konsole.Stdout({
+					sourceType: 'helper',
+					sourceName: 'helper1',
+					templateName: 'myTemplate',
+					templateVersion: 'myVersion',
+					templateLine: 123
+				});
+				konsole.info('Header');
+				konsole.data('name', 'value');
+				// konsole.info('Header', null, 2);
+				// konsole.warn('this might be a problem');
+				// konsole.error('small problem, but keep on executing');
+				// // konsole.errorHalt('big problem, but stop');
+				// throw new Error('I am confused.');
+				var hashval = 'hashvalue';
+				konsole.info('hashname', hashval, 2);
+			}());
 
-			// {{helper2}}
-			var konsole = new Konsole.stdout({
-				sourceType: 'helper',
-				sourceName: 'helper2',
-				templateName: 'myTemplate2',
-				templateVersion: 'myVersion2',
-				templateLine: 444
-			});
-			konsole.info('message2');
+			(function () {
+				// {{helper2}}
+				var konsole = new Konsole.Stdout({
+					sourceType: 'helper',
+					sourceName: 'helper2',
+					templateName: 'myTemplate2',
+					templateVersion: 'myVersion2',
+					templateLine: 444
+				});
+				konsole.info('message2');
+			}());
 
 			// {{somehelper}} random console statements
 			console.log('oops');
@@ -92,20 +95,20 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 				messageValue1: e.stack
 			});
 			captures.push(frame);
+			// console.log(e);
 		}
 
 		// okay, we're done playing with the console stuffs
 		myHook.detach();
 
 		// inspect captures
-		captures.forEach(function(frame) {
-			console.log(frame);
-		});
-		// console.log(captures);
+		// captures.forEach(function(frame, i) {
+		// 	// console.log(i + 1, frame);
+		// });
 
 		// test captures
 		Assert.equal(Array.isArray(captures), true);
-		Assert.equal(captures.length, 8);
+		Assert.equal(captures.length, 9);
 
 		done();
 	});

@@ -7,7 +7,8 @@
   "description": "Console log hook",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "lint": "node_modules/.bin/eslint --rulesdir node_modules/@ravdocs/eslint/rules ."
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,9 @@
     "console-hook": "0.0.2"
   },
   "devDependencies": {
+    "@ravdocs/eslint": "^1.0.7",
     "capture-console": "^1.0.1",
+    "eslint": "^5.16.0",
     "mocha": "^5.2.0"
   }
 }

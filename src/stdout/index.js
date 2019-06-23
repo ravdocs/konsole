@@ -49,7 +49,7 @@ module.exports = function (opts) {
 		var method = 'data';
 		var level = 1;
 		var frame = toFrame(method, level, arg0, arg1);
-		console.data(frame);
+		console.info(frame);
 	}
 
 	return {
@@ -58,5 +58,5 @@ module.exports = function (opts) {
 		info: info,
 		warn: warn,
 		error: error
-	}
+	};
 };
