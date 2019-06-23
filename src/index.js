@@ -1,4 +1,5 @@
 'use strict';
 
-exports.hook = require('./hook');
-exports.format = require('./format');
+exports.Hook = require('./hook');
+exports.Frame = require('./frame');
+exports.stdout = require('./stdout');
