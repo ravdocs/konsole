@@ -1,6 +1,6 @@
 {
-  "name": "@ravdocs/console",
-  "version": "1.0.3",
+  "name": "@ravdocs/konsole",
+  "version": "1.0.0",
   "publishConfig": {
     "scope": "ravdocs"
   },
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ravdocs/console.git"
+    "url": "git+https://github.com/ravdocs/konsole.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ravdocs/console/issues"
+    "url": "https://github.com/ravdocs/konsole/issues"
   },
-  "homepage": "https://github.com/ravdocs/console#readme",
+  "homepage": "https://github.com/ravdocs/konsole#readme",
   "dependencies": {
     "console-hook": "0.0.2"
   },
