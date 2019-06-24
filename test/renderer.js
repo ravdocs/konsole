@@ -2,10 +2,8 @@
 
 var Assert = require('assert');
 var Konsole = require('../src/index.js');
-var Frame = Konsole.Frame;
 
-
-describe.only('Renderer Setup: capture and release stdout with data reporting from helpers', function () {
+describe('Renderer Setup: capture and release stdout with data reporting from helpers', function () {
 	it('should be able to capture stdout and release it', function (done) {
 
 		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
@@ -107,9 +105,9 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 
 			// Helpers are encouraged to `throw` framed errors. However,
 			// we still need to handle both framed and unframed errors.
-			var frame = (e.frame instanceof Frame)
+			var frame = (e.frame instanceof Konsole.Frame)
 				? e.frame
-				: new Frame({
+				: new Konsole.Frame({
 					method: 'error',
 					sourceType: 'renderer',
 					sourceName: 'trycatch',

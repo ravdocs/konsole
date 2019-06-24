@@ -4,7 +4,9 @@
 
 module.exports = function Frame(props) {
 
-	var method = props.method;
+	props = props || {};
+
+	var method = props.method || 'info';
 	method = method.toLowerCase();
 	if (method === 'log') method = 'info';
 
