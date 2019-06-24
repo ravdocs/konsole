@@ -19,7 +19,6 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 					method: method,
 					sourceType: 'renderer',
 					sourceName: 'hook',
-					messageLevel: 1,
 					messageValue0: args[0],
 					messageValue1: args[1]
 				});
@@ -32,30 +31,32 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 			(function () {
 				// {{helper1}}
 				var coordinates = [{a: 'a', b: 'b'}];
-				var konsole = new Konsole.Stdout({
+				var konsole = new Konsole.Wrapper({
 					sourceType: 'helper',
 					sourceName: 'helper1',
 					templateName: 'myTemplate',
 					templateVersion: 'myVersion',
 					templateLine: 123
 				});
+				// var konsole = Utils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER1');
 				konsole.info('hash1', 'value1', 2);
 
-				// log data like what template was nested or coordinates
+				// log `data` like what template was nested or coordinates
 				konsole.data('nested', 'name.category@version'); // string
 				konsole.data('coordinates', coordinates); // data array object
 			}());
 
 			(function () {
 				// {{helper2}}
-				var konsole = new Konsole.Stdout({
+				var konsole = new Konsole.Wrapper({
 					sourceType: 'helper',
 					sourceName: 'helper2',
 					templateName: 'myTemplate2',
 					templateVersion: 'myVersion2',
 					templateLine: 444
 				});
+				// var konsole = Utils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER2');
 				konsole.info('hash1', 'vaule1', 2);
 				konsole.info('hash2', 'vaule2', 2);
@@ -71,7 +72,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 
 
 			(function () {
-				// {{error}} helper
+				// {{error}} helper should frame the error before throwing the error
 				var message = 'An intentional error message from helper helper.';
 				var error = new Error(message);
 				error.intentional = true;
@@ -79,7 +80,6 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 					method: 'error',
 					sourceType: 'helper',
 					sourceName: 'error',
-					messageLevel: 1,
 					messageValue0: message,
 					messageValue1: error.stack,
 					templateName: 'myTemplate2',
@@ -90,6 +90,9 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 			}());
 
 		} catch (e) {
+
+			// Helpers are encouraged to `throw` framed errors.
+			// However, we still need to handle unframed errors.
 			var frame = (e.frame instanceof Frame)
 				? e.frame
 				: new Frame({

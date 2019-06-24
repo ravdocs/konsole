@@ -2,7 +2,7 @@
 
 var Frame = require('../frame');
 
-module.exports = function (opts) {
+module.exports = function Wrapper (opts) {
 
 	var sourceType = opts.sourceType;
 	var sourceName = opts.sourceName;
