@@ -1,7 +1,6 @@
 'use strict';
 
 var Assert = require('assert');
-
 var Konsole = require('../src/index.js');
 var Frame = Konsole.Frame;
 var Hook = Konsole.Hook;
@@ -32,6 +31,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 
 			(function () {
 				// {{helper1}}
+				var coordinates = [{a: 'a', b: 'b'}];
 				var konsole = new Konsole.Stdout({
 					sourceType: 'helper',
 					sourceName: 'helper1',
@@ -43,7 +43,8 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 				konsole.info('hash1', 'value1', 2);
 
 				// log data like what template was nested or coordinates
-				konsole.data('name', 'value');
+				konsole.data('nested', 'name.category@version'); // string
+				konsole.data('coordinates', coordinates); // data array object
 			}());
 
 			(function () {
@@ -107,12 +108,12 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 
 		// inspect captures
 		// captures.forEach(function(frame, i) {
-		// 	// console.log(i + 1, frame);
+		// 	console.log(i + 1, frame);
 		// });
 
 		// test captures
 		Assert.equal(Array.isArray(captures), true);
-		Assert.equal(captures.length, 11);
+		Assert.equal(captures.length, 12);
 
 		done();
 	});
