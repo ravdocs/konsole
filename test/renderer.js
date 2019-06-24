@@ -40,7 +40,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 				});
 				// var konsole = Utils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER1');
-				konsole.info('hash1', 'value1', 2);
+				konsole.info2('hash1', 'value1');
 
 				// log `data` like what template was nested or coordinates
 				konsole.data('nested', 'name.category@version'); // string

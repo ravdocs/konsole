@@ -31,6 +31,11 @@ module.exports = function Wrapper (opts) {
 		console.info(frame);
 	}
 
+	function info2(arg0, arg1) {
+		var level = 2;
+		info(arg0, arg1, level);
+	}
+
 	function warn(arg0, arg1, levelParam) {
 		var method = 'warn';
 		var level = levelParam || 1;
@@ -56,6 +61,7 @@ module.exports = function Wrapper (opts) {
 		data: data,
 		log: info,
 		info: info,
+		info2: info2,
 		warn: warn,
 		error: error
 	};
