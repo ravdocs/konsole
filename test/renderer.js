@@ -3,19 +3,28 @@
 var Assert = require('assert');
 var Konsole = require('../src/index.js');
 var Frame = Konsole.Frame;
-var Hook = Konsole.Hook;
+
 
 describe.only('Renderer Setup: capture and release stdout with data reporting from helpers', function () {
 	it('should be able to capture stdout and release it', function (done) {
 
+		// In @ravdocs/express-renderer web controller
+		var logger = new Konsole.Logger();
+		logger.info('HTML ENGINE: started.');
+		logger.info2('Render', '@ravdocs/template-renderer@1.0.999');
+		logger.info2('Template', 'sometemplate@2019-01-01 PUBLISHED');
+		logger.info2('Timezone', process.env.TZ);
+		logger.info2('Memory before', '12 MB');
+
+		// In @ravdocs/template-renderer engine
 		var captures = [];
 		var silence = true;
-		var stdout = Hook(console, silence).attach((method, args) => {
+		var stdout = Konsole.Hook(console, silence).attach(function (method, args) {
 
 			// handle framed and unframed console statements
-			var frame = (args[0] instanceof Frame)
+			var frame = (args[0] instanceof Konsole.Frame)
 				? args[0]
-				: new Frame({
+				: new Konsole.Frame({
 					method: method,
 					sourceType: 'renderer',
 					sourceName: 'hook',
@@ -38,7 +47,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 					templateVersion: 'myVersion',
 					templateLine: 123
 				});
-				// var konsole = Utils.getKonsole('helper1', options);
+				// var konsole = HelpersUtils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER1');
 				konsole.info2('hash1', 'value1');
 
@@ -56,7 +65,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 					templateVersion: 'myVersion2',
 					templateLine: 444
 				});
-				// var konsole = Utils.getKonsole('helper1', options);
+				// var konsole = HelpersUtils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER2');
 				konsole.info('hash1', 'vaule1', 2);
 				konsole.info('hash2', 'vaule2', 2);
@@ -76,7 +85,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 				var message = 'An intentional error message from helper helper.';
 				var error = new Error(message);
 				error.intentional = true;
-				error.frame = new Frame({
+				error.frame = new Konsole.Frame({
 					method: 'error',
 					sourceType: 'helper',
 					sourceName: 'error',
@@ -87,12 +96,17 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 					templateLine: 444
 				});
 				throw error;
+
+				// todo:
+				// var error = new Error(message);
+				// error = HelpersUtils.frameError(error, 'helpername', options);
+				// throw error;
 			}());
 
 		} catch (e) {
 
-			// Helpers are encouraged to `throw` framed errors.
-			// However, we still need to handle unframed errors.
+			// Helpers are encouraged to `throw` framed errors. However,
+			// we still need to handle both framed and unframed errors.
 			var frame = (e.frame instanceof Frame)
 				? e.frame
 				: new Frame({
@@ -114,9 +128,21 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 		// 	console.log(i + 1, frame);
 		// });
 
-		// test captures
+		// test captures frames
 		Assert.equal(Array.isArray(captures), true);
 		Assert.equal(captures.length, 12);
+
+		// In @ravdocs/express-renderer web controller
+		logger.appendFrames(captures);
+		logger.info('HTML ENGINE');
+		logger.info2('Memory after', '22 MB');
+		logger.info2('Time duration', '0.01 secs');
+		logger.info2('Completed', 'All done');
+
+		// test logger frames
+		var frames = logger.getFrames();
+		Assert.equal(Array.isArray(frames), true);
+		Assert.equal(frames.length, 21);
 
 		done();
 	});
