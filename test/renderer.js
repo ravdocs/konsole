@@ -7,7 +7,10 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 	it('should be able to capture stdout and release it', function (done) {
 
 		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
-		var logger = new Konsole.Logger();
+		var logger = new Konsole.Logger({
+			sourceType: 'renderer/controllers',
+			sourceName: 'html',
+		});
 		logger.info('HTML ENGINE: started.');
 		logger.info2('Render', '@ravdocs/template-renderer@1.0.999');
 		logger.info2('Template', 'sometemplate@2019-01-01 PUBLISHED');
@@ -20,11 +23,12 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 		var stdout = Konsole.Hook(console, silence).attach(function (method, args) {
 
 			// handle framed and unframed console statements
-			var frame = (args[0] instanceof Konsole.Frame)
+			var isUnframed = args[0] instanceof Konsole.Frame;
+			var frame = (isUnframed)
 				? args[0]
 				: new Konsole.Frame({
 					method: method,
-					sourceType: 'renderer',
+					sourceType: 'renderer/engine',
 					sourceName: 'hook',
 					messageValue0: args[0],
 					messageValue1: args[1]
@@ -39,7 +43,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				// {{helper1}}
 				var coordinates = [{a: 'a', b: 'b'}];
 				var konsole = new Konsole.Wrapper({
-					sourceType: 'helper',
+					sourceType: 'renderer/helper',
 					sourceName: 'helper1',
 					templateName: 'myTemplate',
 					templateVersion: 'myVersion',
@@ -57,7 +61,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 			(function () {
 				// {{helper2}}
 				var konsole = new Konsole.Wrapper({
-					sourceType: 'helper',
+					sourceType: 'renderer/helper',
 					sourceName: 'helper2',
 					templateName: 'myTemplate2',
 					templateVersion: 'myVersion2',
@@ -65,8 +69,8 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				});
 				// var konsole = HelpersUtils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER2');
-				konsole.info('hash1', 'vaule1', 2);
-				konsole.info('hash2', 'vaule2', 2);
+				konsole.info2('hash1', 'vaule1');
+				konsole.info2('hash2', 'vaule2');
 			}());
 
 			(function () {
@@ -75,6 +79,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				console.info('hellow-info-oops');
 				console.warn('hello-warn-oops');
 				console.error('hello-error-oops');
+				console.info(this);
 			}());
 
 
@@ -109,7 +114,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				? e.frame
 				: new Konsole.Frame({
 					method: 'error',
-					sourceType: 'renderer',
+					sourceType: 'renderer/engine',
 					sourceName: 'trycatch',
 					messageLevel: 1,
 					messageValue0: e.toString(),
@@ -123,7 +128,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 
 		// test captures frames
 		Assert.equal(Array.isArray(captures), true);
-		Assert.equal(captures.length, 12);
+		Assert.equal(captures.length, 13);
 
 		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
 		logger.appendFrames(captures);
@@ -135,7 +140,9 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 		// test logger frames
 		var frames = logger.getFrames();
 		Assert.equal(Array.isArray(frames), true);
-		Assert.equal(frames.length, 21);
+		Assert.equal(frames.length, 22);
+
+		// console.log(frames);
 
 		done();
 	});
