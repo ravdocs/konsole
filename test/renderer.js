@@ -9,7 +9,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
 		var logger = new Konsole.Logger({
 			sourceType: 'renderer/controllers',
-			sourceName: 'html',
+			sourceName: 'html'
 		});
 		logger.info('HTML ENGINE: started.');
 		logger.info2('Render', '@ravdocs/template-renderer@1.0.999');

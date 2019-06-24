@@ -46,6 +46,11 @@ module.exports = function Logger (opts) {
 	}
 
 	function getFrames () {
+
+		frames = frames.map(function(frame, i) {
+			frame.key = i;
+			return frame;
+		});
 		return frames;
 	}
 
