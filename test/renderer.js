@@ -8,7 +8,7 @@ var Frame = Konsole.Frame;
 describe.only('Renderer Setup: capture and release stdout with data reporting from helpers', function () {
 	it('should be able to capture stdout and release it', function (done) {
 
-		// In @ravdocs/express-renderer web controller
+		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
 		var logger = new Konsole.Logger();
 		logger.info('HTML ENGINE: started.');
 		logger.info2('Render', '@ravdocs/template-renderer@1.0.999');
@@ -16,7 +16,7 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 		logger.info2('Timezone', process.env.TZ);
 		logger.info2('Memory before', '12 MB');
 
-		// In @ravdocs/template-renderer engine
+		// In @RAVDOCS/TEMPLATE-RENDERER src/engine/index.js
 		var captures = [];
 		var silence = true;
 		var stdout = Konsole.Hook(console, silence).attach(function (method, args) {
@@ -123,16 +123,11 @@ describe.only('Renderer Setup: capture and release stdout with data reporting fr
 		// release console
 		stdout.detach();
 
-		// inspect captures
-		// captures.forEach(function(frame, i) {
-		// 	console.log(i + 1, frame);
-		// });
-
 		// test captures frames
 		Assert.equal(Array.isArray(captures), true);
 		Assert.equal(captures.length, 12);
 
-		// In @ravdocs/express-renderer web controller
+		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
 		logger.appendFrames(captures);
 		logger.info('HTML ENGINE');
 		logger.info2('Memory after', '22 MB');
