@@ -10,6 +10,12 @@ module.exports = function Wrapper (opts) {
 	var templateVersion = opts.templateVersion;
 	var templateLine = opts.templateLine;
 
+	// echo greeting
+	var greeting = sourceName.toUpperCase() + ' HELPER';
+	var frame = toFrame('info', 1, greeting);
+	console.info(frame);
+
+
 	function toFrame(method, messageLevel, messageValue0, messageValue1) {
 		return new Frame({
 			method: method,
