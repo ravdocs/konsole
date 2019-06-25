@@ -1,6 +1,6 @@
 {
   "name": "@ravdocs/konsole",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "publishConfig": {
     "scope": "ravdocs"
   },
