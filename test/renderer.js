@@ -114,7 +114,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 
 		// test captures frames
 		Assert.equal(Array.isArray(captures), true);
-		Assert.equal(captures.length, 15);
+		Assert.equal(captures.length, 13);
 
 		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
 		logger.appendFrames(captures);
@@ -126,7 +126,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 		// test logger frames
 		var frames = logger.getFrames();
 		Assert.equal(Array.isArray(frames), true);
-		Assert.equal(frames.length, 24);
+		Assert.equal(frames.length, 22);
 
 		// console.log(frames);
 
