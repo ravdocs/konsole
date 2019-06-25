@@ -30,3 +30,15 @@ npm install @ravdocs/konsole --save
 
 Please see the unit tests.
 
+```js
+var frames = [];
+var silence = true;
+var handler = Konsole.Handler(frames);
+var stdout = Konsole.Hook(console, silence).attach(handler);
+console.log('My pants are on fire!');
+stdout.detach();
+
+// inspect frame captures
+console.log(frames);
+```
+
