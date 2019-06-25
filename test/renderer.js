@@ -20,22 +20,8 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 		// In @RAVDOCS/TEMPLATE-RENDERER src/engine/index.js
 		var captures = [];
 		var silence = true;
-		var stdout = Konsole.Hook(console, silence).attach(function (method, args) {
-
-			// handle framed and unframed console statements
-			var isUnframed = args[0] instanceof Konsole.Frame;
-			var frame = (isUnframed)
-				? args[0]
-				: new Konsole.Frame({
-					method: method,
-					sourceType: 'renderer/engine',
-					sourceName: 'hook',
-					messageValue0: args[0],
-					messageValue1: args[1]
-				});
-
-			captures.push(frame);
-		});
+		var handler = Konsole.Handler(captures);
+		var stdout = Konsole.Hook(console, silence).attach(handler);
 
 		try {
 
