@@ -19,9 +19,8 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 
 		// In @RAVDOCS/TEMPLATE-RENDERER src/engine/index.js
 		var captures = [];
-		var silence = true;
 		var handler = Konsole.Handler(captures);
-		var stdout = Konsole.Hook(console, silence).attach(handler);
+		var stdout = Konsole.Hook({silence: true}).attach(handler);
 
 		try {
 

@@ -34,7 +34,7 @@ Please see the unit tests.
 var frames = [];
 var silence = true;
 var handler = Konsole.Handler(frames);
-var stdout = Konsole.Hook(console, silence).attach(handler);
+var stdout = Konsole.Hook({silence: true}).attach(handler);
 console.log('My pants are on fire!');
 stdout.detach();
 
