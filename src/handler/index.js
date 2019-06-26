@@ -3,17 +3,17 @@
 var Frame = require('../frame');
 
 module.exports = function(frames) {
-	return function handler(method, args) {
+	return function handler(type, args) {
 
 		// handle framed and unframed console statements
 		var isUnframed = args[0] instanceof Frame;
 		var frame = (isUnframed)
 			? args[0]
 			: new Frame({
-				method: method,
+				type: type,
 				source: 'engine/handler',
-				value0: args[0],
-				value1: args[1]
+				name: args[0],
+				value: args[1]
 			});
 
 		frames.push(frame);

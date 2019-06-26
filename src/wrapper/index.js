@@ -7,12 +7,12 @@ module.exports = function Wrapper (opts) {
 	var source = opts.source;
 	var invoked = opts.invoked;
 
-	function toFrame(method, value0, value1) {
+	function toFrame(method, name, value) {
 		return new Frame({
 			method: method,
 			source: source,
-			value0: value0,
-			value1: value1,
+			name: name,
+			value: value,
 			invoked: invoked
 		});
 	}

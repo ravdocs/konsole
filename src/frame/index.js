@@ -6,14 +6,14 @@ module.exports = function Frame(props) {
 
 	props = props || {};
 
-	var method = props.method || 'info';
-	method = method.toLowerCase();
-	if (method === 'log') method = 'info';
+	var type = props.type || 'info';
+	type = type.toLowerCase();
+	if (type === 'log') type = 'info';
 
-	this.method = method;
+	this.type = type;
 	this.source = props.source;
-	this.value0 = props.value0;
-	this.value1 = props.value1;
+	this.name = props.name;
+	this.value = props.value;
 	this.invoked = props.invoked;
 	this.timestamp = new Date().toISOString();
 };

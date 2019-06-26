@@ -30,7 +30,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				});
 				// var konsole = HelpersUtils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER1');
-				konsole.info('hash1', 'value1');
+				konsole.info('hash1', 'value');
 
 				// log `data` like what template was nested or coordinates
 				konsole.data('nested', 'name.category@version'); // string
@@ -65,10 +65,10 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				var error = new Error(message);
 				error.intentional = true;
 				error.frame = new Konsole.Frame({
-					method: 'error',
+					type: 'error',
 					source: 'helpers/error',
-					value0: message,
-					value1: error.stack,
+					name: message,
+					value: error.stack,
 					invoked: 'myTemplate2@myVersion2:444'
 				});
 				throw error;
@@ -86,10 +86,10 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 			var frame = (e.frame instanceof Konsole.Frame)
 				? e.frame
 				: new Konsole.Frame({
-					method: 'error',
+					type: 'error',
 					source: 'engine/trycatch',
-					value0: e.toString(),
-					value1: e.stack
+					name: e.toString(),
+					value: e.stack
 				});
 			captures.push(frame);
 		}
