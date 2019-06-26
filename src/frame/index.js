@@ -15,5 +15,5 @@ module.exports = function Frame(props) {
 	this.name = props.name;
 	this.value = props.value;
 	this.invoked = props.invoked;
-	this.timestamp = new Date().toISOString();
+	this.created = new Date().toISOString();
 };
