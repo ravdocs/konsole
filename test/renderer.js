@@ -26,9 +26,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				var coordinates = [{a: 'a', b: 'b'}];
 				var konsole = new Konsole.Wrapper({
 					source: 'helpers/helper1',
-					templateName: 'myTemplate',
-					templateVersion: 'myVersion',
-					templateLine: 123
+					invoked: 'myTemplate@myVersion:123'
 				});
 				// var konsole = HelpersUtils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER1');
@@ -43,9 +41,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				// {{helper2}}
 				var konsole = new Konsole.Wrapper({
 					source: 'renderer/helpers/helper2',
-					templateName: 'myTemplate2',
-					templateVersion: 'myVersion2',
-					templateLine: 444
+					invoked: 'myTemplate2@myVersion2:444'
 				});
 				// var konsole = HelpersUtils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER2');
@@ -71,11 +67,9 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				error.frame = new Konsole.Frame({
 					method: 'error',
 					source: 'helpers/error',
-					messageValue0: message,
-					messageValue1: error.stack,
-					templateName: 'myTemplate2',
-					templateVersion: 'myVersion2',
-					templateLine: 444
+					value0: message,
+					value1: error.stack,
+					invoked: 'myTemplate2@myVersion2:444'
 				});
 				throw error;
 
@@ -94,8 +88,8 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				: new Konsole.Frame({
 					method: 'error',
 					source: 'engine/trycatch',
-					messageValue0: e.toString(),
-					messageValue1: e.stack
+					value0: e.toString(),
+					value1: e.stack
 				});
 			captures.push(frame);
 		}

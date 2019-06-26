@@ -12,8 +12,8 @@ module.exports = function(frames) {
 			: new Frame({
 				method: method,
 				source: 'engine/handler',
-				messageValue0: args[0],
-				messageValue1: args[1]
+				value0: args[0],
+				value1: args[1]
 			});
 
 		frames.push(frame);

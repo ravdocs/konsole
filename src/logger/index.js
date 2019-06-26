@@ -8,19 +8,15 @@ module.exports = function Logger (opts) {
 
 	var frames = [];
 	var source = opts.source;
-	var templateName = opts.templateName;
-	var templateVersion = opts.templateVersion;
-	var templateLine = opts.templateLine;
+	var invoked = opts.invoked;
 
-	function toFrame(method, messageValue0, messageValue1) {
+	function toFrame(method, value0, value1) {
 		return new Frame({
 			method: method,
 			source: source,
-			messageValue0: messageValue0,
-			messageValue1: messageValue1,
-			templateName: templateName,
-			templateVersion: templateVersion,
-			templateLine: templateLine
+			value0: value0,
+			value1: value1,
+			invoked: invoked
 		});
 	}
 

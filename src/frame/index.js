@@ -12,10 +12,8 @@ module.exports = function Frame(props) {
 
 	this.method = method;
 	this.source = props.source;
-	this.messageValue0 = props.messageValue0;
-	this.messageValue1 = props.messageValue1;
-	this.templateName = props.templateName;
-	this.templateVersion = props.templateVersion;
-	this.templateLine = props.templateLine;
+	this.value0 = props.value0;
+	this.value1 = props.value1;
+	this.invoked = props.invoked;
 	this.timestamp = new Date().toISOString();
 };
