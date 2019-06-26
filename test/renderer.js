@@ -7,10 +7,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 	it('should be able to capture stdout and release it', function (done) {
 
 		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
-		var logger = new Konsole.Logger({
-			sourceType: 'renderer/controllers',
-			sourceName: 'html'
-		});
+		var logger = new Konsole.Logger({source: 'controllers/html'});
 		logger.info('HTML ENGINE: started.');
 		logger.info('Render', '@ravdocs/template-renderer@1.0.999');
 		logger.info('Template', 'sometemplate@2019-01-01 PUBLISHED');
@@ -28,8 +25,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				// {{helper1}}
 				var coordinates = [{a: 'a', b: 'b'}];
 				var konsole = new Konsole.Wrapper({
-					sourceType: 'renderer/helper',
-					sourceName: 'helper1',
+					source: 'helpers/helper1',
 					templateName: 'myTemplate',
 					templateVersion: 'myVersion',
 					templateLine: 123
@@ -46,8 +42,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 			(function () {
 				// {{helper2}}
 				var konsole = new Konsole.Wrapper({
-					sourceType: 'renderer/helper',
-					sourceName: 'helper2',
+					source: 'renderer/helpers/helper2',
 					templateName: 'myTemplate2',
 					templateVersion: 'myVersion2',
 					templateLine: 444
@@ -75,8 +70,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				error.intentional = true;
 				error.frame = new Konsole.Frame({
 					method: 'error',
-					sourceType: 'helper',
-					sourceName: 'error',
+					source: 'helpers/error',
 					messageValue0: message,
 					messageValue1: error.stack,
 					templateName: 'myTemplate2',
@@ -99,8 +93,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				? e.frame
 				: new Konsole.Frame({
 					method: 'error',
-					sourceType: 'renderer/engine',
-					sourceName: 'trycatch',
+					source: 'engine/trycatch',
 					messageValue0: e.toString(),
 					messageValue1: e.stack
 				});

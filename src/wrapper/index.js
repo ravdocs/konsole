@@ -4,24 +4,15 @@ var Frame = require('../frame');
 
 module.exports = function Wrapper (opts) {
 
-	var sourceType = opts.sourceType;
-	var sourceName = opts.sourceName;
+	var source = opts.source;
 	var templateName = opts.templateName;
 	var templateVersion = opts.templateVersion;
 	var templateLine = opts.templateLine;
 
-	// auto greeting would break unittests, but allow
-	// private helpers to have nice greetings.
-	// var greeting = sourceName.toUpperCase() + ' HELPER';
-	// var frame = toFrame('info', 1, greeting);
-	// console.info(frame);
-
-
 	function toFrame(method, messageValue0, messageValue1) {
 		return new Frame({
 			method: method,
-			sourceType: sourceType,
-			sourceName: sourceName,
+			source: source,
 			messageValue0: messageValue0,
 			messageValue1: messageValue1,
 			templateName: templateName,

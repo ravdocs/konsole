@@ -11,8 +11,7 @@ module.exports = function Frame(props) {
 	if (method === 'log') method = 'info';
 
 	this.method = method;
-	this.sourceType = props.sourceType;
-	this.sourceName = props.sourceName;
+	this.source = props.source;
 	this.messageValue0 = props.messageValue0;
 	this.messageValue1 = props.messageValue1;
 	this.templateName = props.templateName;

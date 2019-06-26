@@ -7,8 +7,7 @@ module.exports = function Logger (opts) {
 	opts = opts || {};
 
 	var frames = [];
-	var sourceType = opts.sourceType;
-	var sourceName = opts.sourceName;
+	var source = opts.source;
 	var templateName = opts.templateName;
 	var templateVersion = opts.templateVersion;
 	var templateLine = opts.templateLine;
@@ -16,8 +15,7 @@ module.exports = function Logger (opts) {
 	function toFrame(method, messageValue0, messageValue1) {
 		return new Frame({
 			method: method,
-			sourceType: sourceType,
-			sourceName: sourceName,
+			source: source,
 			messageValue0: messageValue0,
 			messageValue1: messageValue1,
 			templateName: templateName,

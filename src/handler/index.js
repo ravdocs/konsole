@@ -11,8 +11,7 @@ module.exports = function(frames) {
 			? args[0]
 			: new Frame({
 				method: method,
-				sourceType: 'renderer/engine',
-				sourceName: 'handler',
+				source: 'engine/handler',
 				messageValue0: args[0],
 				messageValue1: args[1]
 			});
