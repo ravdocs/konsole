@@ -12,10 +12,10 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 			sourceName: 'html'
 		});
 		logger.info('HTML ENGINE: started.');
-		logger.info2('Render', '@ravdocs/template-renderer@1.0.999');
-		logger.info2('Template', 'sometemplate@2019-01-01 PUBLISHED');
-		logger.info2('Timezone', process.env.TZ);
-		logger.info2('Memory before', '12 MB');
+		logger.info('Render', '@ravdocs/template-renderer@1.0.999');
+		logger.info('Template', 'sometemplate@2019-01-01 PUBLISHED');
+		logger.info('Timezone', process.env.TZ);
+		logger.info('Memory before', '12 MB');
 
 		// In @RAVDOCS/TEMPLATE-RENDERER src/engine/index.js
 		var captures = [];
@@ -36,7 +36,7 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				});
 				// var konsole = HelpersUtils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER1');
-				konsole.info2('hash1', 'value1');
+				konsole.info('hash1', 'value1');
 
 				// log `data` like what template was nested or coordinates
 				konsole.data('nested', 'name.category@version'); // string
@@ -54,8 +54,8 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 				});
 				// var konsole = HelpersUtils.getKonsole('helper1', options);
 				konsole.info('HELPER HELPER2');
-				konsole.info2('hash1', 'vaule1');
-				konsole.info2('hash2', 'vaule2');
+				konsole.info('hash1', 'vaule1');
+				konsole.info('hash2', 'vaule2');
 			}());
 
 			(function () {
@@ -101,7 +101,6 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 					method: 'error',
 					sourceType: 'renderer/engine',
 					sourceName: 'trycatch',
-					messageLevel: 1,
 					messageValue0: e.toString(),
 					messageValue1: e.stack
 				});
@@ -118,9 +117,9 @@ describe('Renderer Setup: capture and release stdout with data reporting from he
 		// In @RAVDOCS/EXPRESS-RENDERER controllers/web.js
 		logger.appendFrames(captures);
 		logger.info('HTML ENGINE');
-		logger.info2('Memory after', '22 MB');
-		logger.info2('Time duration', '0.01 secs');
-		logger.info2('Completed', 'All done');
+		logger.info('Memory after', '22 MB');
+		logger.info('Time duration', '0.01 secs');
+		logger.info('Completed', 'All done');
 
 		// test logger frames
 		var frames = logger.getFrames();
