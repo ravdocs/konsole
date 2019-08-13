@@ -26,6 +26,18 @@ module.exports = function Logger (opts) {
 		frames.push(frame);
 	}
 
+	function warn(arg0, arg1) {
+		var type = 'warn';
+		var frame = toFrame(type, arg0, arg1);
+		frames.push(frame);
+	}
+
+	function error(arg0, arg1) {
+		var type = 'error';
+		var frame = toFrame(type, arg0, arg1);
+		frames.push(frame);
+	}
+
 	function appendFrames(arr) {
 		arr.forEach(function (frame) {
 			frames.push(frame);
@@ -38,6 +50,8 @@ module.exports = function Logger (opts) {
 
 	return {
 		info: info,
+		warn: warn,
+		error: error,
 		appendFrames: appendFrames,
 		getFrames: getFrames
 	};
